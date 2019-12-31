@@ -21,7 +21,7 @@ $(document).ready(function(){
       var cpfill = parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy);
       graphdata.push({ label: cpname, y: cpfill});
       //$("ol").append("hi");
-      $("ol").append($("<li>").append(field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"]," - ",field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus," - ",field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
+      $("ol").append($("<li>").append(cpname," - ",cpstatus," - ",cpfill));
     });
 
     var options = {
