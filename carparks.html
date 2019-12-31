@@ -1,12 +1,13 @@
 <html>
 <head>
   <style>
-    th, td {
+    tr {
       border-bottom: 1px solid #ddd;
     }
 
     table {margin:10px;}
 
+    th {background-color:#eeeeff;}
     tr:nth-child(even) {background-color: #f2f2f2;}
   </style>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -30,7 +31,7 @@ $(document).ready(function(){
     $.each(result.carParks.carPark, function(i, field){
       var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
       var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
-      var cpfill = parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy);
+      var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
       //graphdata.push({ label: cpname, y: cpfill});
       if(cpfill>0) {
         cplabels.push(cpname);
@@ -38,7 +39,7 @@ $(document).ready(function(){
       }
       //$("ol").append("hi");
       //$("ol").append($("<li>").append(cpname," - ",cpstatus," - ",cpfill));
-      $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(Math.round(cpfill), "%")));
+      $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(cpfill, "%")));
     });
 
 /*    var options = {
