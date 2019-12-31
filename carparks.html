@@ -21,13 +21,13 @@ $(document).ready(function(){
       var cpfill = parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy);
       graphdata.push({ label: cpname, y: cpfill});
       //$("ol").append("hi");
-      $("ol").append("<li>",field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"]," - ",field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus," - ",field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy,"%</li>");
+      $("ol").append($("<li>").append(field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"]," - ",field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus," - ",field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
     });
 
     var options = {
     	animationEnabled: true,
     	title: {
-    		text: "Nottingham Car Parks"
+    		text: "Nottingham Car Parks (updates every 5 mins)"
     	},
     	axisY: {
     		title: "Capacity Filled (%)",
@@ -50,10 +50,11 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <div id="chartContainer" style="height: 500px; width: 100%;"></div>
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
+<b>&nbsp; &nbsp; &nbsp; NAME - Status Code - % Full</b>
 <ol></ol>
 </body>
 </html>
