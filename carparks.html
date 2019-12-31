@@ -26,118 +26,87 @@ var cpvalues = [];
 $(document).ready(function(){
 
   $.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
-  //$.getJSON("./test.json",function(result){
-    //$.each(result.d2LogicalModel.payloadPublication.genericPublicationExtension.parkingStatusPublication.parkingRecordStatus, function(i, field){
     $.each(result.carParks.carPark, function(i, field){
       var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
       var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
-      //graphdata.push({ label: cpname, y: cpfill});
-      if(cpfill>0) {
-        cplabels.push(cpname);
-        cpvalues.push(cpfill);
-      }
-      //$("ol").append("hi");
-      //$("ol").append($("<li>").append(cpname," - ",cpstatus," - ",cpfill));
+
+      cplabels.push(cpname);
+      cpvalues.push(cpfill);
+
       $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(cpfill, "%")));
     });
 
-/*    var options = {
-    	animationEnabled: true,
-    	title: {
-    		text: "Nottingham Car Parks (updates every 5 mins)"
-    	},
-    	axisY: {
-    		title: "Capacity Filled (%)",
-    		suffix: "%",
-        maximum: 100,
-    		includeZero: true
-    	},
-    	axisX: {
-    		title: "Car Park Name"
-    	},
-    	data: [{
-    		type: "column",
-    		yValueFormatString: "#,##0.0#"%"",
-    		dataPoints: graphdata
-    	}]
-    };
-    $("#chartContainer").CanvasJSChart(options);
-*/
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: cplabels,//['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '% full',
-            data: cpvalues,//[12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-               'rgba(230, 25, 75, 0.4)',
-               'rgba(60, 180, 75, 0.4)',
-               'rgba(255, 225, 25, 0.4)',
-               'rgba(0, 130, 200, 0.4)',
-               'rgba(245, 130, 48, 0.4)',
-               'rgba(145, 30, 180, 0.4)',
-               'rgba(70, 240, 240, 0.4)',
-               'rgba(240, 50, 230, 0.4)',
-               'rgba(210, 245, 60, 0.4)',
-               'rgba(250, 190, 190, 0.4)',
-               'rgba(0, 128, 128, 0.4)',
-               'rgba(230, 190, 255, 0.4)',
-               'rgba(170, 110, 40, 0.4)',
-               'rgba(255, 250, 200, 0.4)',
-               'rgba(128, 0, 0, 0.4)',
-               'rgba(170, 255, 195, 0.4)',
-               'rgba(128, 128, 0, 0.4)',
-               'rgba(255, 215, 180, 0.4)',
-               'rgba(0, 0, 128, 0.4)',
-               'rgba(128, 128, 128, 0.4)',
-               'rgba(75, 75, 75, 0.4)',
-               'rgba(0, 0, 0, 0.4)'
-            ],
-            borderColor: [
-              'rgba(230, 25, 75, 1)',
-              'rgba(60, 180, 75, 1)',
-              'rgba(255, 225, 25, 1)',
-              'rgba(0, 130, 200, 1)',
-              'rgba(245, 130, 48, 1)',
-              'rgba(145, 30, 180, 1)',
-              'rgba(70, 240, 240, 1)',
-              'rgba(240, 50, 230, 1)',
-              'rgba(210, 245, 60, 1)',
-              'rgba(250, 190, 190, 1)',
-              'rgba(0, 128, 128, 1)',
-              'rgba(230, 190, 255, 1)',
-              'rgba(170, 110, 40, 1)',
-              'rgba(255, 250, 200, 1)',
-              'rgba(128, 0, 0, 1)',
-              'rgba(170, 255, 195, 1)',
-              'rgba(128, 128, 0, 1)',
-              'rgba(255, 215, 180, 1)',
-              'rgba(0, 0, 128, 1)',
-              'rgba(128, 128, 128, 1)',
-              'rgba(50, 50, 50, 1)',
-              'rgba(0, 0, 0, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    max: 100
-                }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: cplabels,
+            datasets: [{
+                label: '% full',
+                data: cpvalues,
+                backgroundColor: [
+                   'rgba(230, 25, 75, 0.4)',
+                   'rgba(60, 180, 75, 0.4)',
+                   'rgba(255, 225, 25, 0.4)',
+                   'rgba(0, 130, 200, 0.4)',
+                   'rgba(245, 130, 48, 0.4)',
+                   'rgba(145, 30, 180, 0.4)',
+                   'rgba(70, 240, 240, 0.4)',
+                   'rgba(240, 50, 230, 0.4)',
+                   'rgba(210, 245, 60, 0.4)',
+                   'rgba(250, 190, 190, 0.4)',
+                   'rgba(0, 128, 128, 0.4)',
+                   'rgba(230, 190, 255, 0.4)',
+                   'rgba(170, 110, 40, 0.4)',
+                   'rgba(255, 250, 200, 0.4)',
+                   'rgba(128, 0, 0, 0.4)',
+                   'rgba(170, 255, 195, 0.4)',
+                   'rgba(128, 128, 0, 0.4)',
+                   'rgba(255, 215, 180, 0.4)',
+                   'rgba(0, 0, 128, 0.4)',
+                   'rgba(128, 128, 128, 0.4)',
+                   'rgba(75, 75, 75, 0.4)',
+                   'rgba(0, 0, 0, 0.4)'
+                ],
+                borderColor: [
+                  'rgba(230, 25, 75, 1)',
+                  'rgba(60, 180, 75, 1)',
+                  'rgba(255, 225, 25, 1)',
+                  'rgba(0, 130, 200, 1)',
+                  'rgba(245, 130, 48, 1)',
+                  'rgba(145, 30, 180, 1)',
+                  'rgba(70, 240, 240, 1)',
+                  'rgba(240, 50, 230, 1)',
+                  'rgba(210, 245, 60, 1)',
+                  'rgba(250, 190, 190, 1)',
+                  'rgba(0, 128, 128, 1)',
+                  'rgba(230, 190, 255, 1)',
+                  'rgba(170, 110, 40, 1)',
+                  'rgba(255, 250, 200, 1)',
+                  'rgba(128, 0, 0, 1)',
+                  'rgba(170, 255, 195, 1)',
+                  'rgba(128, 128, 0, 1)',
+                  'rgba(255, 215, 180, 1)',
+                  'rgba(0, 0, 128, 1)',
+                  'rgba(128, 128, 128, 1)',
+                  'rgba(50, 50, 50, 1)',
+                  'rgba(0, 0, 0, 1)'
+                ],
+                borderWidth: 1
             }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }]
+            }
         }
-    }
-});
-
-
-
+    });
   });
 });
 
@@ -153,9 +122,6 @@ function getRandomColor() {
 </script>
 </head>
 <body>
-  <!--<div id="chartContainer" style="height: 500px; width: 100%;"></div>
-  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-  <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>-->
   <h1 style='text-align:center;'>Nottingham Carparks</h1>
   <canvas id="myChart" width="400" height="150"></canvas>
   <script>
