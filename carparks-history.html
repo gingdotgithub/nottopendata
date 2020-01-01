@@ -1,0 +1,242 @@
+<html>
+<head>
+  <style>
+    tr {
+      border-bottom: 1px solid #ddd;
+    }
+
+    table {margin:10px;}
+
+    th {background-color:#eeeeff;}
+    tr:nth-child(even) {background-color: #f2f2f2;}
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script>
+
+var chartColors = [
+   'rgba(230, 25, 75, 1)',
+   'rgba(60, 180, 75, 1)',
+   'rgba(255, 225, 25, 1)',
+   'rgba(0, 130, 200, 1)',
+   'rgba(245, 130, 48, 1)',
+   'rgba(145, 30, 180, 1)',
+   'rgba(70, 240, 240, 1)',
+   'rgba(240, 50, 230, 1)',
+   'rgba(210, 245, 60, 1)',
+   'rgba(250, 190, 190, 1)',
+   'rgba(0, 128, 128, 1)',
+   'rgba(230, 190, 255, 1)',
+   'rgba(170, 110, 40, 1)',
+   'rgba(255, 250, 200, 1)',
+   'rgba(128, 0, 0, 1)',
+   'rgba(170, 255, 195, 1)',
+   'rgba(128, 128, 0, 1)',
+   'rgba(255, 215, 180, 1)',
+   'rgba(0, 0, 128, 1)',
+   'rgba(128, 128, 128, 1)',
+   'rgba(75, 75, 75, 1)',
+   'rgba(0, 0, 0, 1)'
+]
+//var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+var GRAPHSIZE=144;
+var xaxis = new Array(GRAPHSIZE);
+var hourcount = 0;
+for (var x = GRAPHSIZE-1; x >=0; x--){
+  if (x%12==0){
+    hourcount++;
+    xaxis[x] = "-"+hourcount+" hrs";
+  } else {
+    xaxis[x] = '';
+  }
+}
+//var emptydata = new Array(100);
+var config = {
+  type: 'line',
+  data: {
+    labels: xaxis,//['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [], /*[{
+      label: 'My First dataset',
+      backgroundColor: window.chartColors.red,
+      borderColor: window.chartColors.red,
+      data: [
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor()
+      ],
+      fill: false,
+    }, {
+      label: 'My Second dataset',
+      fill: false,
+      backgroundColor: window.chartColors.blue,
+      borderColor: window.chartColors.blue,
+      data: [
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor(),
+        randomScalingFactor()
+      ],
+    }]*/
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: false,
+      text: 'Nottingham Car Parks'
+    },
+    tooltips: {
+      mode: 'nearest',
+      intersect: false,
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true,
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: false,
+          labelString: 'Month'
+        }
+      }],
+      yAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: '% Full'
+        },
+        ticks: {
+            beginAtZero: true,
+            max: 100
+        }
+      }]
+    }
+  }
+};
+
+/*var colorNames = Object.keys(window.chartColors);
+
+document.getElementById('addDataset').addEventListener('click', function() {
+  var colorName = colorNames[config.data.datasets.length % colorNames.length];
+  var newColor = window.chartColors[colorName];
+  var newDataset = {
+    label: 'Dataset ' + config.data.datasets.length,
+    backgroundColor: newColor,
+    borderColor: newColor,
+    data: [],
+    fill: false
+  };
+
+  for (var index = 0; index < config.data.labels.length; ++index) {
+    newDataset.data.push(randomScalingFactor());
+  }
+
+  config.data.datasets.push(newDataset);
+  window.myLine.update();
+});
+
+document.getElementById('addData').addEventListener('click', function() {
+  if (config.data.datasets.length > 0) {
+    var month = MONTHS[config.data.labels.length % MONTHS.length];
+    config.data.labels.push(month);
+
+    config.data.datasets.forEach(function(dataset) {
+      dataset.data.push(randomScalingFactor());
+    });
+
+    window.myLine.update();
+  }
+});*/
+
+$(document).ready(function(){
+
+  var ctx = document.getElementById('canvas').getContext('2d');
+  window.myLine = new Chart(ctx, config);
+
+  //$.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
+  $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792",function(result){
+    $.each(result.carParks.carPark, function(i, field){
+      var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
+      var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
+      var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
+
+      $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(cpfill, "%")));
+
+      var newdata = new Array(GRAPHSIZE);
+      newdata[GRAPHSIZE-1] = cpfill;
+      var newDataset = {
+        label: cpname,
+        pointRadius:0,
+        backgroundColor: chartColors[i],
+        borderColor: chartColors[i],
+        data: newdata,
+        fill: false
+      };
+
+      config.data.datasets.push(newDataset);
+      window.myLine.update();
+
+    });
+
+    var loopcount;
+    for(loopcount = 1; loopcount<GRAPHSIZE; loopcount++ ) {
+      $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792."+loopcount,updategraph(loopcount));
+    }
+
+  });
+window.myLine.update();
+});
+
+function updategraph(myloopcount){
+  return function(returneddata){
+    //alert("./json-files/defstatus.json%3Ft=637135055585332792."+loopcount);
+    //alert(myloopcount);
+    var carparkcount = 0;
+    $.each(returneddata.carParks.carPark, function(i, field){
+      var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
+      //config.data.labels[this.loopcount] = this.loopcount;
+      config.data.datasets[carparkcount].data[GRAPHSIZE-1-myloopcount] = cpfill;
+      // .forEach(function(dataset) {
+      //   dataset.data[myloopcount] = cpfill;
+      // });
+      carparkcount++;
+    });
+    window.myLine.update();
+  };
+}
+
+
+</script>
+</head>
+<body>
+  <h1 style='text-align:center;'>Nottingham Carparks</h1>
+  <canvas id="canvas" width="400" height="350"></canvas>
+  <script>
+  </script>
+
+<table width="90%">
+  <tr>
+    <th width="50%">Carpark Name</th>
+    <th width="20%">Official Status</th>
+    <th width="20%">% Full</th>
+  </tr>
+</table>
+</body>
+</html>
