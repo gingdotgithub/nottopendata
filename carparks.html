@@ -25,7 +25,8 @@ var cplabels = [];
 var cpvalues = [];
 $(document).ready(function(){
 
-  $.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
+  //$.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
+  $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792",function(result){
     $.each(result.carParks.carPark, function(i, field){
       var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
       var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
