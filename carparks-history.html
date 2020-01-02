@@ -47,11 +47,12 @@ var chartColors = [
    'rgba(0, 0, 0, 1)'
 ]
 
-var GRAPHSIZE=288;
+var GRAPHSIZE=144;
+var SKIPFACTOR=1;
 var xaxis = new Array(GRAPHSIZE);
 var hourcount = 0;
 for (var x = 1; x <= GRAPHSIZE; x++){
-  if (x > 0 && x%12==0){
+  if (x%12==0){
     hourcount++;
     xaxis[GRAPHSIZE-x] = "-"+hourcount+" hrs";
   } else {
@@ -140,7 +141,7 @@ $(document).ready(function(){
 
     var loopcount;
     for(loopcount = 1; loopcount<GRAPHSIZE; loopcount++ ) {
-      $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792."+loopcount,updategraph(loopcount));
+      $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792."+(loopcount*SKIPFACTOR),updategraph(loopcount));
     }
 
   });
