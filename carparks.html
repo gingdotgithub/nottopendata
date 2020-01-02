@@ -24,12 +24,14 @@
 var cplabels = [];
 var cpvalues = [];
 $(document).ready(function(){
-
+  $.ajaxSetup({ cache: false });
   //$.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
   $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792",function(result){
     $.each(result.carParks.carPark, function(i, field){
       var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
       var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
+      cpstatus = cpstatus.charAt(0).toUpperCase() + cpstatus.slice(1);
+      cpstatus = cpstatus.split(/(?=[A-Z])/).join(' ');
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
 
       cplabels.push(cpname);
@@ -111,15 +113,6 @@ $(document).ready(function(){
   });
 });
 
-
-function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = 'rgba(';
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-  }
 </script>
 </head>
 <body>

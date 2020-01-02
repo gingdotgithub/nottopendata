@@ -46,55 +46,27 @@ var chartColors = [
    'rgba(75, 75, 75, 1)',
    'rgba(0, 0, 0, 1)'
 ]
-//var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-var GRAPHSIZE=144;
+var GRAPHSIZE=288;
 var xaxis = new Array(GRAPHSIZE);
 var hourcount = 0;
-for (var x = GRAPHSIZE-1; x >=0; x--){
-  if (x%12==0){
+for (var x = 1; x <= GRAPHSIZE; x++){
+  if (x > 0 && x%12==0){
     hourcount++;
-    xaxis[x] = "-"+hourcount+" hrs";
+    xaxis[GRAPHSIZE-x] = "-"+hourcount+" hrs";
   } else {
-    xaxis[x] = '';
+    xaxis[GRAPHSIZE-x] = '';
   }
 }
-//var emptydata = new Array(100);
+
 var config = {
   type: 'line',
   data: {
-    labels: xaxis,//['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [], /*[{
-      label: 'My First dataset',
-      backgroundColor: window.chartColors.red,
-      borderColor: window.chartColors.red,
-      data: [
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor()
-      ],
-      fill: false,
-    }, {
-      label: 'My Second dataset',
-      fill: false,
-      backgroundColor: window.chartColors.blue,
-      borderColor: window.chartColors.blue,
-      data: [
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor(),
-        randomScalingFactor()
-      ],
-    }]*/
+    labels: xaxis,
+    datasets: [],
   },
   options: {
+    animation:false,
     responsive: true,
     title: {
       display: false,
@@ -107,6 +79,9 @@ var config = {
     hover: {
       mode: 'nearest',
       intersect: true,
+    },
+    legend: {
+      position: 'bottom',
     },
     scales: {
       xAxes: [{
@@ -131,50 +106,18 @@ var config = {
   }
 };
 
-/*var colorNames = Object.keys(window.chartColors);
-
-document.getElementById('addDataset').addEventListener('click', function() {
-  var colorName = colorNames[config.data.datasets.length % colorNames.length];
-  var newColor = window.chartColors[colorName];
-  var newDataset = {
-    label: 'Dataset ' + config.data.datasets.length,
-    backgroundColor: newColor,
-    borderColor: newColor,
-    data: [],
-    fill: false
-  };
-
-  for (var index = 0; index < config.data.labels.length; ++index) {
-    newDataset.data.push(randomScalingFactor());
-  }
-
-  config.data.datasets.push(newDataset);
-  window.myLine.update();
-});
-
-document.getElementById('addData').addEventListener('click', function() {
-  if (config.data.datasets.length > 0) {
-    var month = MONTHS[config.data.labels.length % MONTHS.length];
-    config.data.labels.push(month);
-
-    config.data.datasets.forEach(function(dataset) {
-      dataset.data.push(randomScalingFactor());
-    });
-
-    window.myLine.update();
-  }
-});*/
 
 $(document).ready(function(){
-
+  $.ajaxSetup({ cache: false });
   var ctx = document.getElementById('canvas').getContext('2d');
   window.myLine = new Chart(ctx, config);
 
-  //$.getJSON("https://geoserver.nottinghamcity.gov.uk/parking/defstatus.json?t=637133157740144990",function(result){
   $.getJSON("./json-files/defstatus.json%3Ft=637135055585332792",function(result){
     $.each(result.carParks.carPark, function(i, field){
       var cpname = field.definition.parkingRecord.parkingRecord.parkingName.values.value["#text"];
       var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
+      cpstatus = cpstatus.charAt(0).toUpperCase() + cpstatus.slice(1);
+      cpstatus = cpstatus.split(/(?=[A-Z])/).join(' ');
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
 
       $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(cpfill, "%")));
@@ -182,7 +125,7 @@ $(document).ready(function(){
       var newdata = new Array(GRAPHSIZE);
       newdata[GRAPHSIZE-1] = cpfill;
       var newDataset = {
-        label: cpname,
+        label: cpname,//+" - "+cpfill+"% ("+cpstatus+")",
         pointRadius:0,
         backgroundColor: chartColors[i],
         borderColor: chartColors[i],
@@ -191,9 +134,9 @@ $(document).ready(function(){
       };
 
       config.data.datasets.push(newDataset);
-      window.myLine.update();
 
     });
+    window.myLine.update();
 
     var loopcount;
     for(loopcount = 1; loopcount<GRAPHSIZE; loopcount++ ) {
@@ -201,33 +144,26 @@ $(document).ready(function(){
     }
 
   });
-window.myLine.update();
+
 });
 
 function updategraph(myloopcount){
   return function(returneddata){
-    //alert("./json-files/defstatus.json%3Ft=637135055585332792."+loopcount);
-    //alert(myloopcount);
     var carparkcount = 0;
     $.each(returneddata.carParks.carPark, function(i, field){
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
-      //config.data.labels[this.loopcount] = this.loopcount;
       config.data.datasets[carparkcount].data[GRAPHSIZE-1-myloopcount] = cpfill;
-      // .forEach(function(dataset) {
-      //   dataset.data[myloopcount] = cpfill;
-      // });
       carparkcount++;
     });
     window.myLine.update();
   };
 }
 
-
 </script>
 </head>
 <body>
   <h1 style='text-align:center;'>Nottingham Carparks</h1>
-  <canvas id="canvas" width="400" height="350"></canvas>
+  <canvas id="canvas" width="400" height="200"></canvas>
   <script>
   </script>
 
