@@ -121,20 +121,23 @@ $(document).ready(function(){
       cpstatus = cpstatus.split(/(?=[A-Z])/).join(' ');
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
 
+
       $("table").append($("<tr>").append($("<td>").append(cpname)).append($("<td>").append(cpstatus)).append($("<td>").append(cpfill, "%")));
+      if (cpstatus!="Unknown") {
 
-      var newdata = new Array(GRAPHSIZE);
-      newdata[GRAPHSIZE-1] = cpfill;
-      var newDataset = {
-        label: cpname,//+" - "+cpfill+"% ("+cpstatus+")",
-        pointRadius:0,
-        backgroundColor: chartColors[i],
-        borderColor: chartColors[i],
-        data: newdata,
-        fill: false
-      };
+        var newdata = new Array(GRAPHSIZE);
+        newdata[GRAPHSIZE-1] = cpfill;
+        var newDataset = {
+          label: cpname,//+" - "+cpfill+"% ("+cpstatus+")",
+          pointRadius:0,
+          backgroundColor: chartColors[i],
+          borderColor: chartColors[i],
+          data: newdata,
+          fill: false
+        };
 
-      config.data.datasets.push(newDataset);
+        config.data.datasets.push(newDataset);
+      }
 
     });
     window.myLine.update();
@@ -153,8 +156,11 @@ function updategraph(myloopcount){
     var carparkcount = 0;
     $.each(returneddata.carParks.carPark, function(i, field){
       var cpfill = Math.round(parseFloat(field.status.parkingRecord.parkingRecordStatus.parkingOccupancy.parkingOccupancy));
-      config.data.datasets[carparkcount].data[GRAPHSIZE-1-myloopcount] = cpfill;
-      carparkcount++;
+      var cpstatus = field.status.parkingRecord.parkingRecordStatus.parkingSiteStatus;
+      if (cpstatus!="unknown") {
+        config.data.datasets[carparkcount].data[GRAPHSIZE-1-myloopcount] = cpfill;
+        carparkcount++;
+      }
     });
     window.myLine.update();
   };
