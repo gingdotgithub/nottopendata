@@ -56,7 +56,7 @@ var hourcount = 0;
 for (var x = 1; x <= GRAPHSIZE; x++){
   if (x%12==0){
     hourcount++;
-    xaxis[GRAPHSIZE-x] = "-"+hourcount+" hrs";
+    xaxis[GRAPHSIZE-x] = "-"+(hourcount*SKIPFACTOR)+" hrs";
   } else {
     xaxis[GRAPHSIZE-x] = '';
   }
@@ -130,7 +130,7 @@ $(document).ready(function(){
         var newdata = new Array(GRAPHSIZE);
         newdata[GRAPHSIZE-1] = cpfill;
         var newDataset = {
-          label: cpname+"%",//+" - "+cpfill+"% ("+cpstatus+")",
+          label: cpname,//+" - "+cpfill+"% ("+cpstatus+")",
           pointRadius:0,
           backgroundColor: chartColors[i],
           borderColor: chartColors[i],
@@ -176,6 +176,7 @@ function updategraph(myloopcount){
   <script>
   </script>
 
+<p><b>Based on data from <a href='https://www.opendatanottingham.org.uk/'>Open Data Nottingham</a></b></p>
 <p><b>Please note: data for Talbot St, Wollaton St, and Nottingham Train Station car parks are broken (fixed at 0%, 0%, and 17% respectively). Car parks with a recorded status of "Unknown" are not showing in the line graph.</b></p>
 
 <table width="90%">
